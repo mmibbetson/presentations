@@ -25,11 +25,18 @@ Developers might intuitively understand a function signature as “the first lin
 Jarring Javascript
 ==================
 
-Let's start with some jarring javascript:
+Let's start with an extremely minimalist function signature:
 
 ```javascript
 function c(p, n) {}
 ```
+
+<!-- incremental_lists: true -->
+
+- It's a function
+- It has two arguments
+- ...
+- That's it?
 
 <!-- end_slide -->
 
@@ -37,19 +44,36 @@ function c(p, n) {}
 function changeName(person, name) {}
 ```
 
+<!-- incremental_lists: true -->
+
+- It's a function
+- It has two arguments
+- It changes the name of a person (probably)
+
 <!-- end_slide -->
+
+Documentation comments can immensely improve code understanding.
 
 ```javascript
 /**
  * Changes the name of a person.
  *
  * @param {Object} person - The person whose name will be changed.
- * @param {string} name - The new name to assign to the person.
+ * @param {String} name - The new name to assign to the person.
  * @throws {TypeError} if the input types are invalid.
  * @throws {Error} if the name is empty.
  */
 function changeName(person, name) {}
 ```
+
+<!-- incremental_lists: true -->
+
+- It's a function
+- It has two arguments, an `Object` and a `String`
+- It can throw errors, specifically a `TypeError` or `Error`
+- It changes the name of a person
+
+But how rigidly enforced are the new parts of the contract?
 
 <!-- end_slide -->
 
@@ -96,9 +120,7 @@ This stuff can be done in C# as well!
  * <param name="app"></param>
  * </summary>
  */ 
-internal static IEndpointRouteBuilder RegisterUserEndpoints(this IEndpointRouteBuilder app)
-{
-}
+internal static IEndpointRouteBuilder RegisterUserEndpoints(this IEndpointRouteBuilder app) {}
 ```
 
 <!-- end_slide -->
@@ -153,14 +175,50 @@ This is a BIG deal!
 Summary
 =======
 
+We benefit from having more information in our function signatures. We benefit doubly when we can leverage our code contracts to keep our domain, documentation, and implementation in tight synchronisation.
+
 <!-- incremental_lists: true -->
 
-1. Foo
-2. Bar
-3. Baz
-
+1. Meaningful Names
+2. Types
+3. Errors
+4. Documentation Comments
+5. Memory Information
+6. Possible Performance Characteristics
+7. General Side-Effects
 
 <!-- end_slide -->
+
+Where To?
+=========
+
+Here are a few resources for you to consider based on your needs:
+
+## Javascript
+
+- JSDoc
+
+## Typescript
+
+- TSDoc (msft)
+- Strict compiler mode with errors for cheating
+
+## C#
+
+- C# is strongly typed, but we need to leverage do comments more
+- C# does in fact have doc gen that nobody uses
+
+## Python
+
+- Type hinting with a linter like Ruff
+- Doc gen?
+
+## Rust
+
+- Rust's function signatures are inherently information-dense
+- Cargo has built-in tooling for generating documentation from source code
+
+## Go
 
 Conclusion
 ==========

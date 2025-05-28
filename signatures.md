@@ -1,5 +1,6 @@
 ---
-title: "What's in a Function Signature?"
+title: What's in a Function Signature?
+sub_title: The Power of Code Contracts
 author: mmibbetson
 ---
 
@@ -18,7 +19,21 @@ A function signature defines the input and output of a function. It can include:
 
 Most languages meet this definition with some combination of these features; some languages have additional features as well.
 
-Developers might intuitively understand a function signature as “the first line of the function, which defines the contract by which it can be invoked”. This latter understanding is important because the concept of a “contract” implies something about *the role the function signature plays in software design and development.*
+<!-- end_slide -->
+
+Code Contracts
+==============
+
+**Code Contracts** tell programs and programmers how different parts of the codebase can and should interact. They create rules for how the parts of our systems can come together to form a greater whole.
+
+Code contracts are present in many forms in our code bases, but the primary ones are:
+
+<!-- incremental_lists: true -->
+
+1. Function Signatures
+2. Data Types
+
+We will be focusing almost entirely on the first of these.
 
 <!-- end_slide -->
 
@@ -31,6 +46,8 @@ Let's start with an extremely minimalist function signature:
 function c(p, n) {}
 ```
 
+What do we know about this function from its signature?
+
 <!-- incremental_lists: true -->
 
 - It's a function
@@ -40,9 +57,13 @@ function c(p, n) {}
 
 <!-- end_slide -->
 
+Okay, let's get a little bit more descriptive:
+
 ```javascript
 function changeName(person, name) {}
 ```
+
+What do we know about this function from its signature?
 
 <!-- incremental_lists: true -->
 
@@ -66,6 +87,8 @@ Documentation comments can immensely improve code understanding.
 function changeName(person, name) {}
 ```
 
+What do we know about this function from its signature?
+
 <!-- incremental_lists: true -->
 
 - It's a function
@@ -73,14 +96,52 @@ function changeName(person, name) {}
 - It can throw errors, specifically a `TypeError` or `Error`
 - It changes the name of a person
 
-But how rigidly enforced are the new parts of the contract?
+But how rigidly enforced is our code contract?
+
+<!-- end_slide -->
+
+The Fine Print
+==============
+
+We want our contracts to be:
+
+<!-- incremental_lists: true -->
+
+- Explicit
+- Exhaustive
+- Enforcible
+
+They are only as exhaustive as the author.
+Dcoumentation comments are explicit to the programmer, but not to the program.
+They are not enforcible unless you have the right tools.
+
+Generally, we want to _move the details out of the fine print and into the bold print_, i.e. we want to make as much of our contract verifiable by the language itself.
 
 <!-- end_slide -->
 
 Typical Typescript
 ==================
 
-What are the differences between these two signatures?
+For starters, we can move type information into a gradual or static type system with run time or compile time type checking. In Javascript, this usually means adopting Typescript:
+
+```typescript
+/**
+ * Changes the name of a person.
+ *
+ * @throws {TypeError} if the input types are invalid.
+ * @throws {Error} if the name is empty.
+ */
+function changeName(person: Person, name: String) {}
+```
+
+> Author's note: Dynamic typing is useful and underrated, and static types are not the only means of enforcing contracts.
+
+<!-- end_slide -->
+
+Surfacing New Information
+=========================
+
+Can you spot the difference between these two signatures?
 
 ```typescript
 /**
@@ -93,6 +154,7 @@ function changeName(person: Person, name: String) {}
 ```
 
 <!-- alignment: center -->
+
 **vs.**
 
 ```typescript
@@ -105,19 +167,23 @@ function changeName(person: Person, name: String) {}
 export function changeName(person: Person, name: String): Person {}
 ```
 
+There are various tools in our languages to communicate intent through our code contracts. Often, we are oblivious to how much can be said when we're not made aware of our options.
+
 <!-- end_slide -->
 
 Seeing Sharply
 ==============
 
-This stuff can be done in C# as well!
+C# has built-in support for code documentation and document generation from source code. It helps that it's a statically typed, compiled language as well.
 
 ```csharp
 /**
  * <summary>
- * Blah blah
+ * Extension method to register the endpoints related to the <c>User</c> feature.
+ * Can be chained with other registration extension methods.
  *
- * <param name="app"></param>
+ * <param name="app">The route builder onto which the endpoints will be registered</param>
+ * TODO: How do exceptions and returns?
  * </summary>
  */ 
 internal static IEndpointRouteBuilder RegisterUserEndpoints(this IEndpointRouteBuilder app) {}
@@ -128,7 +194,7 @@ internal static IEndpointRouteBuilder RegisterUserEndpoints(this IEndpointRouteB
 Rigorous Rust
 =============
 
-Talk about rust stuff here.
+Beyond the scope of this talk, Rust allows you to get runnable tests, memory information, thread-safety information, and exhaustive error types, and more into your function signatures.
 
 ````rust
 /// Determines a delivery route for a set of packages considering
@@ -157,7 +223,7 @@ Talk about rust stuff here.
 ///
 /// Returns `RouteError::NoViableRoute` if no viable route can
 /// be calculated with the given constraints.
-pub fn get_delivery_route(
+pub(crate) fn get_delivery_route(
     packages: &[Package],
     options: &DeliveryOptions
 ) -> Result<Route, RouteError> {}
@@ -167,15 +233,15 @@ pub fn get_delivery_route(
 
 <!-- jump_to_middle -->
 
-This is a BIG deal!
-===================
+Programming is about _language_
+===============================
 
 <!-- end_slide -->
 
 Summary
 =======
 
-We benefit from having more information in our function signatures. We benefit doubly when we can leverage our code contracts to keep our domain, documentation, and implementation in tight synchronisation.
+We benefit from having more information in our function signatures. We benefit doubly when we can leverage our code contracts to keep our domain, documentation, and implementation in accord. We can use function signatures to communicate the following:
 
 <!-- incremental_lists: true -->
 
@@ -192,37 +258,18 @@ We benefit from having more information in our function signatures. We benefit d
 Where To?
 =========
 
-Here are a few resources for you to consider based on your needs:
+Tooling goes far beyond type checking and documentation; we should always be leveraging linters, formatters, and other static analysis tools as well, but code contracts help reduce errors, communicate design intent, raise awareness of possible code paths, and integrate with our tools to produce actual, factual documentation.
 
-## Javascript
+<!-- alignment: right -->
 
-- JSDoc
+Our day-to-day tools support this:
 
-## Typescript
+- Javascript with JSDoc
+- Typescript with TSDoc
+- C# has built-in documentation comments and documentation generation
 
-- TSDoc (msft)
-- Strict compiler mode with errors for cheating
-
-## C#
-
-- C# is strongly typed, but we need to leverage do comments more
-- C# does in fact have doc gen that nobody uses
-
-## Python
-
-- Type hinting with a linter like Ruff
-- Doc gen?
-
-## Rust
-
-- Rust's function signatures are inherently information-dense
-- Cargo has built-in tooling for generating documentation from source code
-
-## Go
-
-Conclusion
-==========
-
-Function signatures and documentation comments are contracts that tell both program and programmer how to interact with a piece of code. They can help reduce runtime errors, communicate design intent, raise awareness of possible code paths, and even integrate with tools to produce actual, factual documentation.
+<!-- alignment: left -->
 
 Next time you implement a module of code, pay some mind to how much information you can pack into your function signatures - maybe you'll realise you've been making assumptions you weren't aware of.
+
+**Explicit, exhaustive, enforcible code contracts** are the bedrock of a good codebase.

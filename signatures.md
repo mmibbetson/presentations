@@ -4,6 +4,26 @@ sub_title: The Power of Code Contracts
 author: mmibbetson
 ---
 
+Code Contracts
+==============
+
+**Code Contracts** tell programs and programmers how different parts of the codebase can and should interact. They create rules for how the parts of our systems can come together to form a greater whole.
+
+<!-- newlines: 2 -->
+
+Code contracts are present in many forms in our code bases, but the primary ones are:
+
+<!-- incremental_lists: true -->
+
+1. Function Signatures
+2. Data Types
+
+<!-- newlines: 2 -->
+
+We will be focusing almost entirely on the first of these.
+
+<!-- end_slide -->
+
 The Dotted Line
 ===============
 
@@ -17,23 +37,9 @@ A function signature defines the input and output of a function. It can include:
 - Errors
 - Access
 
+<!-- newlines: 2 -->
+
 Most languages meet this definition with some combination of these features; some languages have additional features as well.
-
-<!-- end_slide -->
-
-Code Contracts
-==============
-
-**Code Contracts** tell programs and programmers how different parts of the codebase can and should interact. They create rules for how the parts of our systems can come together to form a greater whole.
-
-Code contracts are present in many forms in our code bases, but the primary ones are:
-
-<!-- incremental_lists: true -->
-
-1. Function Signatures
-2. Data Types
-
-We will be focusing almost entirely on the first of these.
 
 <!-- end_slide -->
 
@@ -42,9 +48,13 @@ Jarring Javascript
 
 Let's start with an extremely minimalist function signature:
 
+<!-- newlines: 2 -->
+
 ```javascript
 function c(p, n) {}
 ```
+
+<!-- newlines: 2 -->
 
 What do we know about this function from its signature?
 
@@ -59,9 +69,13 @@ What do we know about this function from its signature?
 
 Okay, let's get a little bit more descriptive:
 
+<!-- newlines: 2 -->
+
 ```javascript
 function changeName(person, name) {}
 ```
+
+<!-- newlines: 2 -->
 
 What do we know about this function from its signature?
 
@@ -75,6 +89,8 @@ What do we know about this function from its signature?
 
 Documentation comments can immensely improve code understanding.
 
+<!-- newlines: 2 -->
+
 ```javascript
 /**
  * Changes the name of a person.
@@ -87,6 +103,8 @@ Documentation comments can immensely improve code understanding.
 function changeName(person, name) {}
 ```
 
+<!-- newlines: 2 -->
+
 What do we know about this function from its signature?
 
 <!-- incremental_lists: true -->
@@ -95,6 +113,8 @@ What do we know about this function from its signature?
 - It has two arguments, an `Object` and a `String`
 - It can throw errors, specifically a `TypeError` or `Error`
 - It changes the name of a person
+
+<!-- newlines: 2 -->
 
 But how rigidly enforced is our code contract?
 
@@ -111,9 +131,13 @@ We want our contracts to be:
 - Exhaustive
 - Enforcible
 
+<!-- newlines: 2 -->
+
 They are only as exhaustive as the author.
 Dcoumentation comments are explicit to the programmer, but not to the program.
 They are not enforcible unless you have the right tools.
+
+<!-- newlines: 2 -->
 
 Generally, we want to _move the details out of the fine print and into the bold print_, i.e. we want to make as much of our contract verifiable by the language itself.
 
@@ -124,6 +148,8 @@ Typical Typescript
 
 For starters, we can move type information into a gradual or static type system with run time or compile time type checking. In Javascript, this usually means adopting Typescript:
 
+<!-- newlines: 2 -->
+
 ```typescript
 /**
  * Changes the name of a person.
@@ -134,7 +160,9 @@ For starters, we can move type information into a gradual or static type system 
 function changeName(person: Person, name: String) {}
 ```
 
-> Author's note: Dynamic typing is useful and underrated, and static types are not the only means of enforcing contracts.
+<!-- newlines: 2 -->
+
+> Note: Dynamic typing is useful and underrated, and static types are not the only means of enforcing contracts.
 
 <!-- end_slide -->
 
@@ -143,6 +171,8 @@ Surfacing New Information
 
 Can you spot the difference between these two signatures?
 
+<!-- newlines: 2 -->
+
 ```typescript
 /**
  * Changes the name of a person.
@@ -153,9 +183,13 @@ Can you spot the difference between these two signatures?
 function changeName(person: Person, name: String) {}
 ```
 
+<!-- newlines: 2 -->
+
 <!-- alignment: center -->
 
 **vs.**
+
+<!-- newlines: 2 -->
 
 ```typescript
 /**
@@ -167,6 +201,8 @@ function changeName(person: Person, name: String) {}
 export function changeName(person: Person, name: String): Person {}
 ```
 
+<!-- newlines: 2 -->
+
 There are various tools in our languages to communicate intent through our code contracts. Often, we are oblivious to how much can be said when we're not made aware of our options.
 
 <!-- end_slide -->
@@ -176,16 +212,18 @@ Seeing Sharply
 
 C# has built-in support for code documentation and document generation from source code. It helps that it's a statically typed, compiled language as well.
 
+<!-- newlines: 2 -->
+
 ```csharp
-/**
- * <summary>
- * Extension method to register the endpoints related to the <c>User</c> feature.
- * Can be chained with other registration extension methods.
- *
- * <param name="app">The route builder onto which the endpoints will be registered</param>
- * TODO: How do exceptions and returns?
- * </summary>
- */ 
+/// <summary>
+/// Extension method to register the endpoints related to the <c>User</c> feature.
+/// Can be chained with other registration extension methods.
+/// </summary>
+/// <param name="app">The route builder onto which the endpoints will be registered.</param>
+/// <returns>The same <see cref="IEndpointRouteBuilder"/> instance for method chaining.</returns>
+/// <exception cref="InvalidOperationException">
+/// Thrown when an invalid endpoint registration method is used.
+/// </exception> 
 internal static IEndpointRouteBuilder RegisterUserEndpoints(this IEndpointRouteBuilder app) {}
 ```
 
@@ -262,6 +300,8 @@ Tooling goes far beyond type checking and documentation; we should always be lev
 
 <!-- alignment: right -->
 
+<!-- newlines: 2 -->
+
 Our day-to-day tools support this:
 
 - Javascript with [JSDoc](https://jsdoc.app/)
@@ -270,6 +310,8 @@ Our day-to-day tools support this:
 - Python with [pdoc](https://pdoc.dev/)
 
 <!-- alignment: left -->
+
+<!-- newlines: 2 -->
 
 Next time you implement a module of code, pay some mind to how much information you can pack into your function signatures - maybe you'll realise you've been making assumptions you weren't aware of.
 

@@ -264,9 +264,10 @@ Tooling goes far beyond type checking and documentation; we should always be lev
 
 Our day-to-day tools support this:
 
-- Javascript with JSDoc
-- Typescript with TSDoc
-- C# has built-in documentation comments and documentation generation
+- Javascript with [JSDoc](https://jsdoc.app/)
+- Typescript with [TSDoc](https://tsdoc.org/)
+- C# with [Docfx](https://dotnet.github.io/docfx/)
+- Python with [pdoc](https://pdoc.dev/)
 
 <!-- alignment: left -->
 

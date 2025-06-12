@@ -133,13 +133,13 @@ We want our contracts to be:
 
 <!-- newlines: 2 -->
 
+Documentation comments are explicit to the programmer, but not to the program.
 They are only as exhaustive as the author.
-Dcoumentation comments are explicit to the programmer, but not to the program.
 They are not enforcible unless you have the right tools.
 
 <!-- newlines: 2 -->
 
-Generally, we want to _move the details out of the fine print and into the bold print_, i.e. we want to make as much of our contract verifiable by the language itself.
+Generally, we want to _move the details out of the fine print and into the bold print_, i.e. we want to make as much of our contract verifiable by the tooling we have, or the language itself.
 
 <!-- end_slide -->
 
@@ -159,6 +159,19 @@ For starters, we can move type information into a gradual or static type system 
  */
 function changeName(person: Person, name: String) {}
 ```
+
+<!-- newlines: 2 -->
+
+What do we know about this function from its signature?
+
+<!-- incremental_lists: true -->
+
+- It's a function
+- It has two arguments, an `Person` and a `String`
+- It can throw errors, specifically a `TypeError` or `Error`
+- It changes the name of a person
+
+We "knew" these things before, but now our guarantees are much stronger (although you can fudge Typescript types, it can be configured to be very strict on its enforcement of typing).
 
 <!-- newlines: 2 -->
 

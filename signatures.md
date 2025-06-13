@@ -228,15 +228,17 @@ C# has built-in support for code documentation and document generation from sour
 <!-- newlines: 2 -->
 
 ```csharp
-/// <summary>
-/// Extension method to register the endpoints related to the <c>User</c> feature.
-/// Can be chained with other registration extension methods.
-/// </summary>
-/// <param name="app">The route builder onto which the endpoints will be registered.</param>
-/// <returns>The same <see cref="IEndpointRouteBuilder"/> instance for method chaining.</returns>
-/// <exception cref="InvalidOperationException">
-/// Thrown when an invalid endpoint registration method is used.
-/// </exception> 
+/**
+ * <summary>
+ * Extension method to register the endpoints related to the <c>User</c> feature.
+ * Can be chained with other registration extension methods.
+ * </summary>
+ * <param name="app">The route builder onto which the endpoints will be registered.</param>
+ * <returns>The same <see cref="IEndpointRouteBuilder"/> instance for method chaining.</returns>
+ * <exception cref="InvalidOperationException">
+ * Thrown when an invalid endpoint registration method is used.
+ * </exception> 
+ */
 internal static IEndpointRouteBuilder RegisterUserEndpoints(this IEndpointRouteBuilder app) {}
 ```
 
